@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://github.com/staplez-studio/BluePill_Extra_Applications/blob/main/github-banner-1024x512.png?raw=true" alt="Staplez Studio Banner" width="85%" />
-  <img src="https://github.com/staplez-studio/Stm32.Dx-Smart.PJ26-Serial-Adapter/blob/main/PXL_20261119_224404739.jpg?raw=true" alt="Staplez Studio Banner" width="10%" />
+  <img src="https://github.com/staplez-studio/Stm32.Dx-Smart.PJ26-Serial-Adapter/blob/main/PXL_20261119_224404739.jpg?raw=true" alt="Staplez Studio Banner" width="35%" />
 </p>
 
 # PJ26 USB-Serial Adapter(untested)
