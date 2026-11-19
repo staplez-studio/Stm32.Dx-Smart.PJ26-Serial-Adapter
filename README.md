@@ -94,13 +94,18 @@ Check the USB protocol logic on a PC (no hardware needed):
 gcc -Wall -o usb_test usb_test.c usb_proto.c && ./usb_test     # 19 checks
 ```
 
-## Flash the adapter
+## Flash the adapter 2 options
+
+(option 1)
 Flash the `.bin` at address **0x08000000** with an ST-Link on the SWD pads (3V3, GND, PA13 SWDIO, PA14 SWCLK):
 - STM32CubeProgrammer: open the file, set the address 0x08000000, Download.
 - `st-flash write pj26_usb_native.bin 0x8000000`
 - or flash the `.hex` file, which carries its own address.
 
 PA13/PA14 are not used by this firmware, so the ST-Link keeps working.
+
+(option 2)
+Flash the `.hex` mcuisp.exe method will update soon.
 
 ## Uses
 **1. Flash an ESP32-CAM from the Arduino IDE.** Board *AI Thinker ESP32-CAM*, choose the new COM port, set Upload Speed to 460800 or lower (921600 is too fast for this polled adapter), press Upload. With the PA5 reset wire it is hands-off. Without it, press the cam's reset when the IDE says "Connecting...". Afterwards press reset again to run the sketch.
