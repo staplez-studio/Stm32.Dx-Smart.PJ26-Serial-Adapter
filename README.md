@@ -1,6 +1,6 @@
 # PJ26 USB-Serial Adapter
 
-Firmware that turns a spare **DX-SMART PJ26** (STM32F103C8T6) into a 3.3 V **USB-to-serial adapter** with automatic ESP32 boot-mode control and an optional 1.3" OLED status screen. It was written to flash an **ESP32-CAM**, but it works as a general 3.3 V serial adapter.
+Firmware that turns a **DX-SMART PJ26** (STM32F103C8T6) into a 3.3 V **USB-to-serial adapter** with automatic ESP32 boot-mode control and an optional 1.3" OLED status screen. It was written to flash an **ESP32-CAM**, but it works as a general 3.3 V serial adapter.
 
 The board shows up on the PC as a standard USB serial port (CDC-ACM). It uses the STM32's own USB pins, not the on-board CH340, and only these pins: **PA2, PA3, PA4, PA5, PA11, PA12, PB0, PB1, PB11, 3V3**.
 
