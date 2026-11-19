@@ -96,7 +96,7 @@ gcc -Wall -o usb_test usb_test.c usb_proto.c && ./usb_test     # 19 checks
 
 ## Flash the adapter 2 options
 
-(option 1)
+##(option 1)
 Flash the `.bin` at address **0x08000000** with an ST-Link on the SWD pads (3V3, GND, PA13 SWDIO, PA14 SWCLK):
 - STM32CubeProgrammer: open the file, set the address 0x08000000, Download.
 - `st-flash write pj26_usb_native.bin 0x8000000`
@@ -104,7 +104,7 @@ Flash the `.bin` at address **0x08000000** with an ST-Link on the SWD pads (3V3,
 
 PA13/PA14 are not used by this firmware, so the ST-Link keeps working.
 
-(option 2)
+##(option 2)
 Flash the `.hex` mcuisp.exe method will update soon.
 
 ## Uses
