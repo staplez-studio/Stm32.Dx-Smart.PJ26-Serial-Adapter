@@ -96,7 +96,7 @@ gcc -Wall -o usb_test usb_test.c usb_proto.c && ./usb_test     # 19 checks
 
 ## Flash the adapter 2 options
 
-##<br>(option 1)<br.
+##<br>(option 1)<br>
 Flash the `.bin` at address **0x08000000** with an ST-Link on the SWD pads (3V3, GND, PA13 SWDIO, PA14 SWCLK):
 - STM32CubeProgrammer: open the file, set the address 0x08000000, Download.
 - `st-flash write pj26_usb_native.bin 0x8000000`
