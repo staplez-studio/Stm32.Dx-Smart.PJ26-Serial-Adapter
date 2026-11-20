@@ -1,4 +1,5 @@
 UNDER TESTING WARNING FALLOW NEW WIRE GUIDE
+FLIP THE USBC in the port sometimes works it worked for me :)
 # PJ26 USB-Serial Adapter
 
 Firmware that turns a spare **DX-SMART PJ26** (STM32F103C8T6) into a 3.3 V **USB-to-serial adapter** with automatic ESP32 boot-mode control and an optional 1.3" OLED status screen. It was written to flash an **ESP32-CAM**, but it works as a general 3.3 V serial adapter.
