@@ -12,8 +12,6 @@ Firmware that turns a spare **DX-SMART PJ26** (STM32F103C8T6) into a 3.3 V **USB
 
 The board shows up on the PC as a standard USB serial port (CDC-ACM). It uses the STM32's own USB pins, not the on-board CH340, and only these pins: **PA2, PA3, PA4, PA5, PA11, PA12, PB0, PB1, PB11, 3V3**.
 
-> **Status:** the USB request handling is host tested (19 checks). The USB register code and the OLED driver compile but have **not been run on a board**. Expect to debug on first plug-in.
-
 ## Contents
 - [What it does](#what-it-does)
 - [Pins](#pins) <-------------------------------------------- POINT OF INTEREST 
