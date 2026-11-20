@@ -18,7 +18,7 @@ The board shows up on the PC as a standard USB serial port (CDC-ACM). It uses th
 - [What it does](#what-it-does)
 - [Pins](#pins) <-------------------------------------------- POINT OF INTEREST 
 - [Wiring](#wiring) <-----------------------------------------POINT OF INTEREST 
-- [Compile](#compile)
+- [Compile](#compile)<------------------- Already compiled so unless you edited you can skip this.
 - [Flash the adapter](#flash-the-adapter) <------- SAVE TIME SKIP TO HERE
 - [Uses](#uses)
 - [OLED status screen](#oled-status-screen)
