@@ -95,7 +95,7 @@ PA4 and PA5 are open-drain: they only ever pull low or let go, never drive high.
         |
       1.5k to 3V3                      (about 1.2k to 2.2k also works;
                                         two resistors in parallel are fine)
-LET ME SIMPLIFY HOOK TO THE 3V3 PIN BESIDE PC13 PIN
+                                        LET ME SIMPLIFY HOOK TO THE 3V3 PIN BESIDE PC13 PIN
  GND ------------------->  GND  ---------------------->  GND
                            PA2  ---------------------->  U0R (GPIO3)
                            PA3  <----------------------  U0T (GPIO1)
