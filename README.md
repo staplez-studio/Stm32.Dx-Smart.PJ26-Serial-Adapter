@@ -2,7 +2,7 @@
   <img src="https://github.com/staplez-studio/BluePill_Extra_Applications/blob/main/github-banner-1024x512.png?raw=true" alt="Staplez Studio Banner" width="85%" />
 </p>
 NOTE : IF WINDOWS CANT SEE THE SERIAL ADAPTER FLIP THE USBC IN THE PORT - it worked for me :)
-# PJ26 USB-Serial Adapter<br>
+# PJ26 USB-Serial Adapter<br><br>
 
 Firmware that turns a spare **DX-SMART PJ26** (STM32F103C8T6) into a 3.3 V **USB-to-serial adapter** with automatic ESP32 boot-mode control and an optional 1.3" OLED status screen. It was written to flash an **ESP32-CAM**, but it works as a general 3.3 V serial adapter.
 
