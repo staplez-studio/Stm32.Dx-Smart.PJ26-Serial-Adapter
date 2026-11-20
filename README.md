@@ -38,7 +38,7 @@ The board shows up on the PC as a standard USB serial port (CDC-ACM). It uses th
 ## Pins
 | Pin | Function | Direction | Notes |
 |---|---|---|---|
-| PA11 | USB D- | PC <-> board | To the USB cable's D- (white or green wire) |
+| PA11 | USB D- | PC <-> board | To the USB cable's D- |
 | PA12 | USB D+ | PC <-> board | To D+, **plus a 1.5 kΩ resistor to 3V3(the first pin its next to pc13)**: this "I am present" pull-up is what makes the PC detect the device |
 | PA2 | USART2 TX | out | To the target's RX (ESP32-CAM U0R, GPIO3) |
 | PA3 | USART2 RX | in | From the target's TX (ESP32-CAM U0T, GPIO1). 3.3 V only |
