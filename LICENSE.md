@@ -5,7 +5,7 @@ Copyright (c) 2026 Staplez Studio
 ## Summary
 Free for personal, non-commercial use. **Commercial use needs a separate licence: contact Staplez Studio first.**
 
-Contact for commercial licensing: **[CONTACT EMAIL OR WEBSITE - to be added by Staplez Studio]**
+Contact for commercial licensing: STAPLEZSTUDIO@GMAIL.COM
 
 ## Permission
 You may use, copy, modify and share this software and its documentation (the "Software") for **personal, non-commercial purposes**, such as hobby projects, learning, research and non-profit education, provided that:
