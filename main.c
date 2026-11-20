@@ -3,11 +3,13 @@
  *   PA2  = USART2 TX -> cam U0R (GPIO3)       PA3 = USART2 RX <- cam U0T (GPIO1)
  *   PA4  = open-drain -> cam GPIO0 (pulled LOW while the PC asserts DTR only)   [auto boot-loader entry]
  *   PA5  = open-drain -> cam EN/reset pad (pulled LOW while the PC asserts RTS only) [optional wire]
+ *   PB0  = OLED SCL, PB1 = OLED SDA (optional 1.3" SH1106 I2C status screen, 3V3 + GND)
  *   PB11 = blue LED (lit while bytes pass)
  * The PC sees a standard USB CDC serial port; baud, DTR and RTS follow what the PC program sets.
  * Clock: 8 MHz crystal x9 = 72 MHz, USB gets 48 MHz (PLL / 1.5). */
 #include <stdint.h>
 #include "usb_proto.h"
+#include "oled.h"
 typedef uint32_t u32; typedef uint16_t u16; typedef uint8_t u8;
 #define REG(a)  (*(volatile u32 *)(a))
 #define REG16(a) (*(volatile u16 *)(a))
@@ -133,6 +135,8 @@ static void apply_line(void)
 }
 
 static u8 rx_blocked, tx_busy, tx_last_full, led_flag;
+static volatile u32 n_pc_to_cam, n_cam_to_pc;
+static u8 seen_host;
 static void usb_enable_data_eps(void)
 {
     btable(1, EP1_TX, 0, 0);
@@ -185,6 +189,7 @@ static void ep0_tx_done(void)
 
 static void usb_reset(void)
 {
+    seen_host = 1;
     USB_BTABLE = 0;
     btable(0, EP0_TX, EP0_RX, RXCNT64);
     ep_conf(0, T_CTRL, 0, RX_VALID, TX_NAK);
@@ -209,6 +214,7 @@ static void usb_poll(void)
             pma_read(EP2_RX, b, cnt);
             clr_ctr_rx(2);
             for (int i = 0; i < cnt; i++) { to_cam.b[to_cam.h & (RING - 1u)] = b[i]; to_cam.h++; }
+            n_pc_to_cam += (u32)cnt;
             led_flag = 1;
             if (RING - (to_cam.h - to_cam.t) >= 64u) ep_set(2, RX_VALID, KEEP); else rx_blocked = 1;
         } else if (ep == 3 && (v & 0x0080u)) { clr_ctr_tx(3); tx_busy = 0; }
@@ -226,6 +232,7 @@ static void usb_poll(void)
             to_pc.t += (u32)n;
             pma_write(EP3_TX, b, n);
             PMA(3u * 8u + 2u) = (u16)n;
+            n_cam_to_pc += (u32)n;
             tx_last_full = (n == 64);                  /* a full packet is followed by a short/empty one when the stream pauses */
             tx_busy = 1; led_flag = 1;
             ep_set(3, KEEP, TX_VALID);
@@ -233,19 +240,54 @@ static void usb_poll(void)
     }
 }
 
+
+/* ---- OLED status screen (all text, 8 lines x 21 characters) ---- */
+static int put(char *o, int n, const char *s) { while (*s && n < 21) o[n++] = *s++; o[n] = 0; return n; }
+static int putu(char *o, int n, u32 v) { char d[11]; int k = 0; do { d[k++] = (char)('0' + v % 10u); v /= 10u; } while (v && k < 10); while (k && n < 21) o[n++] = d[--k]; o[n] = 0; return n; }
+
+static void ui_update(void)
+{
+    char l[22]; int n; u8 io0, en;
+    usbp_esp_pins(usb.dtr, usb.rts, &io0, &en);
+    oled_line(0, "PJ26 USB-SERIAL");
+    n = put(l, 0, "USB: ");
+    put(l, n, !seen_host ? "WAITING FOR PC" : !usb.configured ? "CONNECTING" : (usb.dtr || usb.rts) ? "PORT OPEN" : "READY");
+    oled_line(1, l);
+    n = put(l, 0, "BAUD: "); putu(l, n, usb.baud); oled_line(2, l);
+    n = put(l, 0, "DTR:"); n = putu(l, n, usb.dtr); n = put(l, n, " RTS:"); putu(l, n, usb.rts); oled_line(3, l);
+    n = put(l, 0, "IO0:"); n = put(l, n, io0 ? "LOW " : "HIGH"); n = put(l, n, " EN:"); put(l, n, en ? "RESET" : "RUN"); oled_line(4, l);
+    n = put(l, 0, "PC>CAM "); putu(l, n, n_pc_to_cam); oled_line(5, l);
+    n = put(l, 0, "CAM>PC "); putu(l, n, n_cam_to_pc); oled_line(6, l);
+    oled_line(7, "TX:PA2 RX:PA3");
+}
+
+static void halt_msg(void) { for (;;) oled_flush(); }   /* failure: leave the message on the screen */
+
 void main_c(void)
 {
-    /* clock 72 MHz from the crystal; USB needs it, so there is no fallback */
+    /* 1. screen first, on the internal 8 MHz clock, so every later start-up step can be reported on it */
+    RCC_APB2ENR |= (1u << 2) | (1u << 3);              /* GPIOA, GPIOB */
+    int have_oled = oled_init();
+    oled_line(0, "PJ26 USB-SERIAL"); oled_line(1, "BOOT OK"); oled_flush();
+
+    /* 2. clock 72 MHz from the crystal (USB needs it). Each step has a time-out and reports a failure */
+    u32 t = 600000u;
     RCC_CR |= (1u << 16);
-    while (!(RCC_CR & (1u << 17))) {}
+    while (!(RCC_CR & (1u << 17)) && --t) {}
+    if (!(RCC_CR & (1u << 17))) { oled_line(1, "FAIL: NO CRYSTAL"); oled_line(2, "8 MHZ XTAL (HSE)"); oled_line(3, "DID NOT START"); halt_msg(); }
     FLASH_ACR = (1u << 4) | 2u;
     RCC_CFGR = (1u << 16) | (7u << 18) | (4u << 8);   /* PLL from HSE x9, APB1 /2; USBPRE=0 -> 72/1.5 = 48 MHz */
     RCC_CR |= (1u << 24);
-    while (!(RCC_CR & (1u << 25))) {}
+    t = 600000u;
+    while (!(RCC_CR & (1u << 25)) && --t) {}
+    if (!(RCC_CR & (1u << 25))) { oled_line(1, "FAIL: PLL NO LOCK"); halt_msg(); }
     RCC_CFGR = (RCC_CFGR & ~3u) | 2u;
-    while (((RCC_CFGR >> 2) & 3u) != 2u) {}
+    t = 600000u;
+    while ((((RCC_CFGR >> 2) & 3u) != 2u) && --t) {}
+    if (((RCC_CFGR >> 2) & 3u) != 2u) { oled_line(1, "FAIL: CLOCK SWITCH"); halt_msg(); }
+    oled_line(1, "CLOCK 72MHZ OK"); oled_flush();
+    (void)have_oled;
 
-    RCC_APB2ENR |= (1u << 2) | (1u << 3);              /* GPIOA, GPIOB */
     RCC_APB1ENR |= (1u << 17) | (1u << 23);            /* USART2, USB */
     GPIOA_ODR |= (1u << 3) | (1u << 4) | (1u << 5);    /* RX pull-up; open-drain outputs idle released */
     GPIOA_CRL = (GPIOA_CRL & ~(0xFFFFu << 8)) | (0xBu << 8) | (0x8u << 12) | (0x6u << 16) | (0x6u << 20);
@@ -261,10 +303,14 @@ void main_c(void)
     USB_CNTR = 0;
     USB_ISTR = 0;
     usb_reset();
+    seen_host = 0;
+    oled_line(1, "USB: STARTING");
 
-    u32 led = 0;
+    u32 led = 0, ui_div = 0;
     for (;;) {
         usb_poll();
+        if (++ui_div >= 60000u) { ui_div = 0; ui_update(); }   /* about every 100-200 ms */
+        oled_step();
         if (to_cam.h != to_cam.t && (U2_SR & (1u << 7))) { U2_DR = to_cam.b[to_cam.t & (RING - 1u)]; to_cam.t++; }
         if (led_flag) { led_flag = 0; led = 400000u; }
         GPIOB_BSRR = led ? (1u << 11) : (1u << (11 + 16));
