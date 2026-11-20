@@ -1,5 +1,7 @@
-UNDER TESTING WARNING FALLOW NEW WIRE GUIDE
-FLIP THE USBC in the port sometimes works it worked for me :)
+<p align="center">
+  <img src="https://github.com/staplez-studio/BluePill_Extra_Applications/blob/main/github-banner-1024x512.png?raw=true" alt="Staplez Studio Banner" width="85%" />
+</p>
+NOTE : IF WINDOWS CANT SEE THE SERIAL ADAPTER FLIP THE USBC IN THE PORT - it worked for me :)
 # PJ26 USB-Serial Adapter
 
 Firmware that turns a spare **DX-SMART PJ26** (STM32F103C8T6) into a 3.3 V **USB-to-serial adapter** with automatic ESP32 boot-mode control and an optional 1.3" OLED status screen. It was written to flash an **ESP32-CAM**, but it works as a general 3.3 V serial adapter.
@@ -13,7 +15,7 @@ The board shows up on the PC as a standard USB serial port (CDC-ACM). It uses th
 - [Pins](#pins)
 - [Wiring](#wiring)
 - [Compile](#compile)
-- [Flash the adapter](#flash-the-adapter)
+- [Flash the adapter](#flash-the-adapter) <------- SAVE TIME SKIP TO HERE
 - [Uses](#uses)
 - [OLED status screen](#oled-status-screen)
 - [Limits](#limits)
@@ -92,6 +94,14 @@ gcc -Wall -o usb_test usb_test.c usb_proto.c && ./usb_test     # 19 checks
 ```
 
 ## Flash the adapter
+EASY WAY GET MCUISP.exe
+Use the usb on the PJ26.
+Flash the hex file.
+I can provide a video of this if needed but I find it basic.
+I also assume you already download drivers for the PJ26.
+
+or
+
 Flash the `.bin` at address **0x08000000** with an ST-Link on the SWD pads (3V3, GND, PA13 SWDIO, PA14 SWCLK):
 - STM32CubeProgrammer: open the file, set the address 0x08000000, Download.
 - `st-flash write pj26_usb_native.bin 0x8000000`
