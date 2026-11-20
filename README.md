@@ -16,8 +16,8 @@ The board shows up on the PC as a standard USB serial port (CDC-ACM). It uses th
 
 ## Contents
 - [What it does](#what-it-does)
-- [Pins](#pins)
-- [Wiring](#wiring)
+- [Pins](#pins) <-------------------------------------------- POINT OF INTEREST 
+- [Wiring](#wiring) <-----------------------------------------POINT OF INTEREST 
 - [Compile](#compile)
 - [Flash the adapter](#flash-the-adapter) <------- SAVE TIME SKIP TO HERE
 - [Uses](#uses)
