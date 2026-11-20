@@ -105,6 +105,7 @@ PA4 and PA5 are open-drain: they only ever pull low or let go, never drive high.
 ```
 
 - **The 1.5 kΩ resistor** goes between PA12 and 3V3. It is a side branch: the D+ wire runs straight to PA12, one resistor leg joins at PA12, the other leg goes to 3V3. It is what tells the PC a USB device is present; without it nothing is detected.
+- <img src="https://github.com/staplez-studio/Stm32.Dx-Smart.PJ26-Serial-Adapter/blob/main/PUSHERUPSTA.png?raw=true" alt="Staplez Studio Banner" width="85%" />
 - **USB-C breakout orientation:** most breakouts connect only one of the plug's two D+/D- pairs. If nothing is detected, flip the plug over.
 - **Power the adapter** from its own USB-C (the CH340 stays unused), and leave the data cable's VBUS unconnected so two supplies do not meet. Alternatively feed 5 V from the data cable into the board's 5V pad and leave the USB-C empty. Do not use both.
 - **Power the ESP32-CAM** from its own 5 V source with a common ground. Its Wi-Fi bursts are too much for the PJ26's 3.3 V regulator. Add 470 to 1000 µF at its 5 V pin.
