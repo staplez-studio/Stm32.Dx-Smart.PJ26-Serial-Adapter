@@ -1,10 +1,10 @@
 <p align="center">
   <img src="https://github.com/staplez-studio/BluePill_Extra_Applications/blob/main/github-banner-1024x512.png?raw=true" alt="Staplez Studio Banner" width="85%" />
 </p>
-
+<p align="center">
 <img src="https://github.com/staplez-studio/Stm32.Dx-Smart.PJ26-Serial-Adapter/blob/main/PXL_20261120_003646181.MP.jpg?raw=true" alt="Staplez Studio Banner" width="30%" />
 <img src="https://github.com/staplez-studio/Stm32.Dx-Smart.PJ26-Serial-Adapter/blob/main/PXL_20261120_004340735.jpg?raw=true" alt="Staplez Studio Banner" width="30%" />
-
+</p>
 NOTE : IF WINDOWS CANT SEE THE SERIAL ADAPTER FLIP THE USBC IN THE PORT - it worked for me :)<br>
 # PJ26 USB-Serial Adapter<br><br>
 
