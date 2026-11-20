@@ -75,7 +75,7 @@ PA4 and PA5 are open-drain: they only ever pull low or let go, never drive high.
 | Pin | Function | Direction | Notes |
 |---|---|---|---|
 | PA11 | USB D- | PC to board | USB cable D- |
-| PA12 | USB D+ | PC to board | USB cable D+, **plus a 1.5 kΩ resistor to 3V3** |
+| PA12 | USB D+ | PC to board | USB cable D+, **plus a 1.5 kΩ resistor to 3V3** TO SIMPLIFY HOOK TO THE 3V3 PIN BESIDE PC13 PIN |
 | PA2 | USART2 TX | out | To the target's RX (ESP32-CAM U0R, GPIO3) |
 | PA3 | USART2 RX | in | From the target's TX (ESP32-CAM U0T, GPIO1). 3.3 V only |
 | PA4 | Boot control | open-drain out | ESP32 GPIO0 |
@@ -94,7 +94,7 @@ PA4 and PA5 are open-drain: they only ever pull low or let go, never drive high.
  D+  ---+--------------->  PA12
         |
       1.5k to 3V3                      (about 1.2k to 2.2k also works;
-                                        two resistors in parallel are fine)
+                                        two resistors in parallel are fine) LET ME SIMPLIFY HOOK TO THE 3V3 PIN BESIDE PC13 PIN
  GND ------------------->  GND  ---------------------->  GND
                            PA2  ---------------------->  U0R (GPIO3)
                            PA3  <----------------------  U0T (GPIO1)
